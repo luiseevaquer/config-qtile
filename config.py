@@ -48,26 +48,47 @@ class Battery(widget.Battery):
 
 if count_screen == 2:
     screens = [
-        Screen(top = bar.Bar([
-                widget.GroupBox(urgent_alert_method='text'),
+        Screen(
+            bottom=bar.Bar([
+                widget.TaskList(highlight_method='block',),
+                widget.KeyboardLayout(configured_keyboards=['us', 'latam', 'es']),
+                widget.DF(visible_on_warn=False, measure='M', warn_space=900, format=' {uf}{m} | {r:.0f}% '),
+                widget.ThermalSensor(),
+                widget.BatteryIcon(),
+                widget.Battery(fontsize=10),
+                ], 24,),
+            top = bar.Bar([
+                widget.GroupBox(
+                    urgent_alert_method='text',
+                    highlight_method='block',
+                    inactive='999999'),
                 widget.Prompt(
                     prompt="run: ",
                 ),
-                widget.WindowName(foreground='00FFFF'),
-                widget.KeyboardLayout(configured_keyboards=['us', 'latam', 'es']),
+                #widget.WindowName(foreground='00FFFF'),
+                widget.Spacer(),
+                widget.CapsNumLockIndicator(),
                 widget.Systray(),
-                widget.Clock(format='%a %b %d, %H:%M'),
+                #widget.Volume(update_interval=0.2, cardid=1, emoji=True),
+                widget.Clock(format='|| %a %b %d || %H:%M'),
                 widget.TextBox(text=" "),
-                widget.BatteryIcon(),
-                widget.Battery(fontsize=10),
-            ], 24,),
+                ], 24,),
         ),
-        Screen(top = bar.Bar([
-                widget.GroupBox(urgent_alert_method='text'),
-                widget.WindowName(foreground='00FFFF'),
+        Screen(
+            bottom=bar.Bar([
+                widget.TaskList(highlight_method='block',),
+                #widget.Mpris2(objname='org.mpris.MediaPlayer2.spotify', name='spotify'),
+                ], 24,),
+            top = bar.Bar([
+                widget.GroupBox(
+                    urgent_alert_method='text',
+                    highlight_method='block',
+                    inactive='999999'),
+                widget.Spacer(),
+                #widget.WindowName(foreground='00FFFF'),
                 widget.Notify(foreground="FF0000", fontsize=12, font="Anonymous Pro"),
                 #widget.Clock('%Y-%m-%d %a %H:%M %p'),
-            ], 24,),
+                ], 24,),
         ),
     ]
 else:
@@ -80,6 +101,7 @@ else:
                 ),
                 widget.WindowName(foreground='00FFFF'),
                 widget.Notify(foreground="FF0000", fontsize=12, font="Anonymous Pro"),
+                widget.CapsNumLockIndicator(),
                 widget.KeyboardLayout(configured_keyboards=['us', 'latam', 'es']),
                 widget.Systray(),
                 widget.Clock(format='%a %b %d, %H:%M'),
@@ -118,6 +140,8 @@ keys = [
     Key([mod, "control"], "x",   lazy.window.kill()),
     Key([mod], "e",              lazy.spawn("nautilus")),
     Key([mod, "control"], "r",   lazy.restart()),
+    Key([mod, "shift"], "r",   lazy.restart()),
+    Key([mod, "mod1"], "r",   lazy.restart()),
     Key([mod, "control"], "q",   lazy.shutdown()),
     Key(["shift", "mod1"], "q",  lazy.shutdown()),
 
@@ -131,8 +155,8 @@ keys = [
     Key([mod, "mod1"], "u",         lazy.widget['notify'].next()),
 
     # start specific apps
-    Key([mod, "shift"], "n",             lazy.spawn("firefox")),
-    Key([], "XF86HomePage",              lazy.spawn("firefox")),
+    Key([mod, "control"], "F1",             lazy.spawn("firefox")),
+    Key([mod, "control"], "F2",             lazy.spawn("terminator")),
     Key([], "XF86Calculator",            lazy.spawn("gnome-calculator")),
     #Key([mod], "Music",              lazy.function(app_or_group("music", "spotify"))),
     Key([mod, "shift"], "t",             lazy.spawn("urxvt -letsp 1 -rv +sb")),
@@ -141,40 +165,44 @@ keys = [
     # Change the volume if our keyboard has keys
     Key(
         [], "XF86AudioRaiseVolume",
-        lazy.spawn("amixer -c 1 set Headphone 10%+")
+        lazy.spawn("amixer -c 1 set Headphone 5%+")
     ),
     Key(
         [], "XF86AudioLowerVolume",
-        lazy.spawn("amixer -c 1 set Headphone 10%-")
+        lazy.spawn("amixer -c 1 set Headphone 5%-")
     ),
     Key(
         [], "XF86AudioMute",
         lazy.spawn("pactl set-sink-mute @DEFAULT_SINK@ toggle")
     ),
-    Key([], "XF86Tools", lazy.spawn("spotify")),
+    Key(
+        [mod], "XF86AudioMute",
+        lazy.spawn("urxvt -letsp 1 -rv +sb -e alsamixer")
+    ),
+
+    Key([mod], "XF86Mail", lazy.spawn("terminator")), 
+    Key([], "XF86HomePage",              lazy.spawn("firefox")),
     Key([], "XF86Messenger", lazy.spawn("zoom")),
+    Key([], "XF86Tools", lazy.spawn("spotify")),
+
     Key([], "XF86Launch5", lazy.spawn("google-chrome")), # Buttom 1 
     Key([], "XF86Launch6", lazy.spawn("epiphany-browser")), # Buttom 2 
     Key([], "XF86Launch7", lazy.spawn("libreoffice --calc")), # Buttom 3 
     Key([], "XF86Launch9", lazy.spawn("/home/lescobarvx/.config/qtile/freeram.sh")), # Buttom 5 
-    #Key(
-    #    [], "XF86AudioNext",
-    #    lazy.spawn("spotify --next")
-    #),
-    #Key(
-    #    [], "XF86AudioPrev",
-    #    lazy.spawn("spotify --prev")
-    #),
 
-    Key([mod, "control"], "n",     lazy.spawn("killall firefox")),
+    Key([], "XF86AudioPlay", lazy.spawn("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause")),
+    Key([], "XF86AudioNext", lazy.spawn("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next")),
+    Key([], "XF86AudioPrev", lazy.spawn("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous")),
+
+    Key([mod, "mod1"], "F1",     lazy.spawn("killall firefox")),
     Key([mod, "control"], "XF86HomePage",     lazy.spawn("killall firefox")),
     Key([mod], "XF86Favorites",     lazy.spawn("urxvt -letsp 1 -rv +sb -e cmatrix -a -b -C blue")),
 
     #Brightness
     Key([], "XF86MonBrightnessUp", lazy.spawn("/home/lescobarvx/.config/qtile/bright_up.sh")),
     Key([], "XF86MonBrightnessDown", lazy.spawn("/home/lescobarvx/.config/qtile/bright_down.sh")),
-    Key([], "XF86AudioNext", lazy.spawn("/home/lescobarvx/.config/qtile/bright_up.sh")),
-    Key([], "XF86AudioPrev", lazy.spawn("/home/lescobarvx/.config/qtile/bright_down.sh")),
+    Key([mod], "XF86AudioNext", lazy.spawn("/home/lescobarvx/.config/qtile/bright_up.sh")),
+    Key([mod], "XF86AudioPrev", lazy.spawn("/home/lescobarvx/.config/qtile/bright_down.sh")),
 ]
 
 # Drag floating layouts.
