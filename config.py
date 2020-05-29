@@ -52,7 +52,7 @@ if count_screen == 2:
             bottom=bar.Bar([
                 widget.TaskList(highlight_method='block',),
                 widget.KeyboardLayout(configured_keyboards=['us', 'latam', 'es']),
-                widget.DF(visible_on_warn=False, measure='M', warn_space=900, format=' {uf}{m} | {r:.0f}% '),
+                widget.DF(visible_on_warn=False, measure='G', warn_space=5, format=' {uf}{m} | {r:.0f}% '),
                 widget.ThermalSensor(),
                 widget.BatteryIcon(),
                 widget.Battery(fontsize=10),
@@ -177,17 +177,22 @@ keys = [
     ),
     Key(
         [mod], "XF86AudioMute",
-        lazy.spawn("urxvt -letsp 1 -rv +sb -e alsamixer")
+        lazy.spawn("pavucontrol")
     ),
 
     Key([mod], "XF86Mail", lazy.spawn("terminator")), 
     Key([], "XF86HomePage",              lazy.spawn("firefox")),
     Key([], "XF86Messenger", lazy.spawn("zoom")),
     Key([], "XF86Tools", lazy.spawn("spotify")),
+    Key([mod], "XF86Tools", lazy.spawn("kodi")),
 
-    Key([], "XF86Launch5", lazy.spawn("google-chrome")), # Buttom 1 
-    Key([], "XF86Launch6", lazy.spawn("epiphany-browser")), # Buttom 2 
-    Key([], "XF86Launch7", lazy.spawn("libreoffice --calc")), # Buttom 3 
+    Key([], "XF86Launch5", lazy.spawn("firefox-dev")), # Buttom 1 
+    Key([mod, "control"], "XF86Launch5", lazy.spawn("killall firefox-bin")), # Buttom 1 
+    Key([], "XF86Launch6", lazy.spawn("google-chrome")), # Buttom 2 
+    Key([mod, "control"], "XF86Launch6", lazy.spawn("killall google-chrome")), # Buttom 2 
+    Key([], "XF86Launch7", lazy.spawn("epiphany-browser")), # Buttom 3 
+    Key([mod, "control"], "XF86Launch7", lazy.spawn("killall epiphany-browser")), # Buttom 3 
+    Key([], "XF86Launch8", lazy.spawn("libreoffice --calc")), # Buttom 4 
     Key([], "XF86Launch9", lazy.spawn("/home/lescobarvx/.config/qtile/freeram.sh")), # Buttom 5 
 
     Key([], "XF86AudioPlay", lazy.spawn("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause")),
@@ -196,13 +201,17 @@ keys = [
 
     Key([mod, "mod1"], "F1",     lazy.spawn("killall firefox")),
     Key([mod, "control"], "XF86HomePage",     lazy.spawn("killall firefox")),
-    Key([mod], "XF86Favorites",     lazy.spawn("urxvt -letsp 1 -rv +sb -e cmatrix -a -b -C blue")),
+    Key([mod], "XF86Favorites",     lazy.spawn("xscreensaver-command --restart")),
 
     #Brightness
     Key([], "XF86MonBrightnessUp", lazy.spawn("/home/lescobarvx/.config/qtile/bright_up.sh")),
     Key([], "XF86MonBrightnessDown", lazy.spawn("/home/lescobarvx/.config/qtile/bright_down.sh")),
+    Key(["control"], "XF86MonBrightnessUp", lazy.spawn("/home/lescobarvx/.config/qtile/bright_100.sh")),
+    Key(["control"], "XF86MonBrightnessDown", lazy.spawn("/home/lescobarvx/.config/qtile/bright_0.sh")),
     Key([mod], "XF86AudioNext", lazy.spawn("/home/lescobarvx/.config/qtile/bright_up.sh")),
     Key([mod], "XF86AudioPrev", lazy.spawn("/home/lescobarvx/.config/qtile/bright_down.sh")),
+    Key([mod, "control"], "XF86AudioNext", lazy.spawn("/home/lescobarvx/.config/qtile/bright_100.sh")),
+    Key([mod, "control"], "XF86AudioPrev", lazy.spawn("/home/lescobarvx/.config/qtile/bright_0.sh")),
 ]
 
 # Drag floating layouts.
@@ -245,9 +254,11 @@ for i in ['a', 's', 'd', 'f']:
 # function.
 groups.extend([
     Group('tools', layout='max', persist=False, init=False,
-          matches=[Match(wm_class=['nautilus','Nautilus', 'gnome-calculator', 'Calculadora', 'Calculator'])]),
+          matches=[Match(wm_class=['nautilus','Nautilus', 'gnome-calculator', 'Calculadora', 'Calculator', 'pavucontrol', 'Control de Volumen'])]),
     Group('music', layout='max', persist=False, init=False,
-          matches=[Match(wm_class=['spotify', 'Spotify Free'])]),
+          matches=[Match(wm_class=['spotify', 'Spotify Free', 'Spotify', '/snap/spotify/41/usr/share/spotify/spotify'])]),
+    Group('video', layout='max', persist=False, init=False,
+          matches=[Match(wm_class=['kodi-bin', 'kodi', 'Kodi'])]),
     Group('meet', layout='max', persist=False, init=False,
           matches=[Match(wm_class=['zoom', 'meeting'])]),
     Group('www', layout='max', persist=False, init=False,
@@ -268,13 +279,14 @@ esp_groups = {
    'w': 'www',
    't': 'tools',
    'x': 'dev', 
-   'm': 'music',
+   'm': 'music', 
+   'v': 'video', 
    'q': 'term',
    'l': 'office',
    'o': 'others',
 }
 
-for i in ['w', 't', 'x', 'm', 'q', 'l', 'o']:
+for i in ['w', 't', 'x', 'm', 'q', 'l', 'o', 'v']:
     keys.append(
         Key([mod], i, lazy.group[esp_groups[i]].toscreen())
     )
