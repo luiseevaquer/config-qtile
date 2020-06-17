@@ -189,7 +189,7 @@ keys = [
     Key([], "XF86Launch5", lazy.spawn("firefox-dev")), # Buttom 1 
     Key([mod, "control"], "XF86Launch5", lazy.spawn("killall firefox-bin")), # Buttom 1 
     Key([], "XF86Launch6", lazy.spawn("google-chrome")), # Buttom 2 
-    Key([mod, "control"], "XF86Launch6", lazy.spawn("killall google-chrome")), # Buttom 2 
+    Key([mod, "control"], "XF86Launch6", lazy.spawn("killall chrome")), # Buttom 2 
     Key([], "XF86Launch7", lazy.spawn("epiphany-browser")), # Buttom 3 
     Key([mod, "control"], "XF86Launch7", lazy.spawn("killall epiphany-browser")), # Buttom 3 
     Key([], "XF86Launch8", lazy.spawn("libreoffice --calc")), # Buttom 4 
