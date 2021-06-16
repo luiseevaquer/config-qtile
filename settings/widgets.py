@@ -1,8 +1,12 @@
 from libqtile import widget
 from settings.theme import colors
 from settings.monitors import connected_monitors
+import subprocess
 
 # Get the icons at https://www.nerdfonts.com/cheat-sheet (you need a Nerd Font)
+
+def whatismyip():
+    return '   ' + subprocess.check_output(['curl', 'ifconfig.me']).decode('utf-8').strip()  + ' '
 
 base = lambda fg='text', bg='dark': {
     'foreground': colors[fg],
@@ -109,7 +113,7 @@ secondary_widgets = [
 
     widget.CurrentLayout(**base(bg='color2'), padding=5),
 
-
+    widget.GenPollText(**base(bg='color2'), func=whatismyip),
 ]
 
 pbottom_widgets = [

@@ -42,6 +42,8 @@ keys = [
     Key([mod, "mod1"], "r",   lazy.restart()),
     Key([mod, "control"], "q",   lazy.shutdown()),
     Key(["shift", "mod1"], "q",  lazy.shutdown()),
+    #Key([mod, "shift"], "p",  lazy.window.qtile.delete_group(lazy.window.qtile.current_group.name)),
+    #Key([mod, "shift"], "p",  lazy.spawncmd()),
 
     # interact with prompts
     Key([mod], "r",              lazy.spawncmd()),
@@ -55,7 +57,9 @@ keys = [
     # start specific apps
     Key([mod], "F1",             lazy.spawn("firefox")),
     Key([mod], "F2",             lazy.spawn("terminator")),
-    Key([mod, "control"], "F1",     lazy.spawn("killall /usr/lib/firefox/firefox")),
+    Key([mod], "XF86Mail",       lazy.spawn("terminator")), 
+    Key([mod, "control"], "XF86Mail",       lazy.spawn("killall terminator")), 
+    #Key([mod, "control"], "F1",     lazy.spawn("killall /usr/lib/firefox/firefox")),
     Key([mod, "control"], "F2",     lazy.spawn("killall terminator")),
     Key([mod, "control"], "XF86Calculator",            lazy.spawn("killall gnome-calculator")),
     #Key([mod], "Music",              lazy.function(app_or_group("music", "spotify"))),
@@ -76,7 +80,6 @@ keys = [
         lazy.spawn("pactl set-sink-mute @DEFAULT_SINK@ toggle")
     ),
 
-    Key([mod], "XF86Mail", lazy.spawn("terminator")), 
     Key([], "XF86HomePage",              lazy.spawn("firefox")),
     Key([mod], "XF86Messenger", lazy.spawn("zoom")),
     Key([mod], "XF86Tools", lazy.spawn("kodi")),
@@ -86,9 +89,9 @@ keys = [
     Key([mod, "control", "shift"], "F2", lazy.spawn("killall /opt/firefox-dev/firefox-bin")), # Buttom 1 
     Key([], "XF86Launch6", lazy.spawn("google-chrome")), # Buttom 2 
     Key([mod, "control"], "XF86Launch6", lazy.spawn("killall chrome")), # Buttom 2 
-    Key([], "XF86Launch7", lazy.spawn("epiphany-browser")), # Buttom 3 
-    Key([mod, "control"], "XF86Launch7", lazy.spawn("killall epiphany-browser")), # Buttom 3 
-    Key([], "XF86Launch8", lazy.spawn("libreoffice --calc")), # Buttom 4 
+    Key([], "XF86Launch7", lazy.spawn("geany")), # Buttom 3 
+    Key([mod, "control"], "XF86Launch7", lazy.spawn("killall geany")), # Buttom 3 
+    Key([], "XF86Launch8", lazy.spawn("onlyoffice-desktopeditors")), # Buttom 4 
     Key([], "XF86Launch9", lazy.spawn("/home/lescobarvx/.config/qtile/freeram.sh")), # Buttom 5 
     Key([mod, "control", "shift"], "F5", lazy.spawn("/home/lescobarvx/.config/qtile/freeram.sh")), # Buttom 5 
 
@@ -97,7 +100,7 @@ keys = [
     Key([], "XF86AudioPrev", lazy.spawn("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous")),
 
     Key([mod, "control"], "XF86HomePage",     lazy.spawn("killall /usr/lib/firefox/firefox")),
-    Key([], "XF86Favorites",     lazy.spawn("geany")),
+    Key([], "XF86Favorites",     lazy.spawn("code")),
 
     #Brightness
     Key([], "XF86MonBrightnessUp", lazy.spawn("/home/lescobarvx/.config/qtile/bright_up.sh")),
@@ -108,4 +111,6 @@ keys = [
     Key([mod], "XF86AudioPrev", lazy.spawn("/home/lescobarvx/.config/qtile/bright_down.sh")),
     Key([mod, "control"], "XF86AudioNext", lazy.spawn("/home/lescobarvx/.config/qtile/bright_100.sh")),
     Key([mod, "control"], "XF86AudioPrev", lazy.spawn("/home/lescobarvx/.config/qtile/bright_0.sh")),
+    Key([mod, "mod1"], "F12", lazy.spawn("/home/lescobarvx/.config/qtile/code_acer.sh")),
+    Key([mod, "mod1"], "F11", lazy.spawn("/home/lescobarvx/.config/qtile/code_raditz.sh")),
 ]

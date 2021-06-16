@@ -14,11 +14,18 @@ layout_conf = {
     'border_width': 1,
     'margin': 4
 }
+layout_monad_conf = {
+    'border_focus': colors['focus'][0],
+    'border_normal': "#000000",
+    'border_width': 1,
+    'margin': 4,
+    'ratio': 0.75
+}
 
 layouts = [
     layout.Max(),
     layout.MonadTall(**layout_conf),
-    layout.MonadWide(**layout_conf),
+    layout.MonadWide(**layout_monad_conf),
     layout.Bsp(**layout_conf),
     layout.Matrix(columns=2, **layout_conf),
     layout.RatioTile(**layout_conf),
@@ -45,6 +52,8 @@ floating_layout = layout.Floating(
         {'wname': 'branchdialog'},
         {'wname': 'pinentry'},
         {'wmclass': 'ssh-askpass'},
+        {'wmclass': 'ulauncher'},
+        {'wname': 'ulauncher'},
     ],
     border_focus=colors["color4"][0]
 )
