@@ -1,9 +1,9 @@
 #!/bin/sh
-ulauncher &
+#ulauncher &
 synergy &
 megasync &
-dropbox start &
-# telegram-desktop &
-blueman-manager &
-shutter --min_at_startup &
+#dropbox start &
+shutter &
+blueman-applet &
 xscreensaver -nosplash &
+triggercmdagent &

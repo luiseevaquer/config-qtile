@@ -9,6 +9,17 @@ from libqtile.command import lazy
 
 
 mod = "mod4"
+shift = "shift"
+alt = "mod1"
+control = "control"
+
+# EMBY VARIABLES
+SERVER = "http://192.168.1.16"
+PORT = "8096"
+API = "aa5a3636ba5540099f001e81d3122619"
+SESSION = "11f0b585ab09be1d51a70079d77d1c15"
+HEADER = '-H "accept: */*" -H "Content-Type: application/json"'
+#HEADER = '-H "accept: */*" -H "Content-Type: application/json" -d "{\"Command\":\"PlayPause\",\"SeekPositionTicks\":0,\"ControllingUserId\":\"string\"}"'
 
 keys = [
     # Log out; note that this doesn't use mod3: that's intentional in case mod3
@@ -64,7 +75,9 @@ keys = [
     Key([mod, "control"], "XF86Calculator",            lazy.spawn("killall gnome-calculator")),
     #Key([mod], "Music",              lazy.function(app_or_group("music", "spotify"))),
     Key([mod, "shift"], "t",             lazy.spawn("urxvt -letsp 1 -rv +sb")),
-    Key([mod], "Print",         lazy.spawn("shutter")),
+    Key([mod], "Print",         lazy.spawn("flameshot gui")),
+    Key([mod, "control"], "Print",         lazy.spawn("flameshot screen -r")),
+    Key(["control"], "space",         lazy.spawn("rofi -show drun")),
 
     # Change the volume if our keyboard has keys
     Key(
@@ -89,18 +102,28 @@ keys = [
     Key([mod, "control", "shift"], "F2", lazy.spawn("killall /opt/firefox-dev/firefox-bin")), # Buttom 1 
     Key([], "XF86Launch6", lazy.spawn("google-chrome")), # Buttom 2 
     Key([mod, "control"], "XF86Launch6", lazy.spawn("killall chrome")), # Buttom 2 
-    Key([], "XF86Launch7", lazy.spawn("geany")), # Buttom 3 
-    Key([mod, "control"], "XF86Launch7", lazy.spawn("killall geany")), # Buttom 3 
+    Key([], "XF86Launch7", lazy.spawn("wcm")), # Buttom 3 
+    Key([mod, "control"], "XF86Launch7", lazy.spawn("killall wcm")), # Buttom 3 
     Key([], "XF86Launch8", lazy.spawn("onlyoffice-desktopeditors")), # Buttom 4 
     Key([], "XF86Launch9", lazy.spawn("/home/lescobarvx/.config/qtile/freeram.sh")), # Buttom 5 
     Key([mod, "control", "shift"], "F5", lazy.spawn("/home/lescobarvx/.config/qtile/freeram.sh")), # Buttom 5 
-
+ 
     Key([], "XF86AudioPlay", lazy.spawn("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause")),
     Key([], "XF86AudioNext", lazy.spawn("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next")),
     Key([], "XF86AudioPrev", lazy.spawn("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous")),
 
+    Key([mod], "XF86AudioPlay", lazy.spawn('curl -X POST "%s:%s/emby/Sessions/%s/Playing/PlayPause?api_key=%s" -H "accept: */*" -H "Content-Type: application/json" -d "{\"Command\":\"PlayPause\",\"SeekPositionTicks\":0,\"ControllingUserId\":\"string\"}"' % (SERVER, PORT, SESSION, API))),
+    Key([mod], "XF86AudioNext", lazy.spawn('curl -X POST "%s:%s/emby/Sessions/%s/Playing/NextTrack?api_key=%s" -H "accept: */*" -H "Content-Type: application/json" -d "{\"Command\":\"NextTrack\",\"SeekPositionTicks\":0,\"ControllingUserId\":\"string\"}"' % (SERVER, PORT, SESSION, API))),
+    Key([mod], "XF86AudioPrev", lazy.spawn('curl -X POST "%s:%s/emby/Sessions/%s/Playing/PreviousTrack?api_key=%s" -H "accept: */*" -H "Content-Type: application/json" -d "{\"Command\":\"PreviousTrack\",\"SeekPositionTicks\":0,\"ControllingUserId\":\"string\"}"' % (SERVER, PORT, SESSION, API))),
+    Key([mod], "XF86AudioStop", lazy.spawn('curl -X POST "%s:%s/emby/Sessions/%s/Command/GoHome?api_key=%s" -H "accept: */*" -H "Content-Type: application/json" -d "{\"Command\":\"GoHome\"}"' % (SERVER, PORT, SESSION, API))),
+    Key([mod, "control"], "XF86AudioStop", lazy.spawn('curl -X POST "%s:%s/emby/Sessions/%s/Command/GoToSettings?api_key=%s" -H "accept: */*" -H "Content-Type: application/json" -d "{\"Command\":\"GoToSettings\"}"' % (SERVER, PORT, SESSION, API))),
+    #Key([], "XF86AudioNext", lazy.spawn('curl -X POST "{}:{}/emby/Sessions/{}/Playing/NextTrack?api_key={}" {} -d "{\"Command\":\"NextTrack\"}"'.format(SERVER, PORT, SESSION, API, HEADER))),
+    #Key([], "XF86AudioPrev", lazy.spawn('curl -X POST "{}:{}/emby/Sessions/{}/Playing/PreviousTrack?api_key={}" {} -d "{\"Command\":\"PreviousTrack\"}"'.format(SERVER, PORT, SESSION, API, HEADER))),
+    #Key([], "XF86AudioStop", lazy.spawn('curl -X POST "{}:{}/emby/Sessions/{}/Command/ToggleOsdMenu?api_key={}" {} -d "{\"Command\":\"ToggleOsdMenu\"}"'.format(SERVER, PORT, SESSION, API, HEADER))),
+    Key([mod, "mod1"], "XF86AudioStop", lazy.spawn("ssh lescobar@192.168.1.16 \"/home/lescobar/.config/qtile/shutdown.sh\"")),
+
     Key([mod, "control"], "XF86HomePage",     lazy.spawn("killall /usr/lib/firefox/firefox")),
-    Key([], "XF86Favorites",     lazy.spawn("code")),
+    # Key([], "XF86Favorites",     lazy.spawn("code")),
 
     #Brightness
     Key([], "XF86MonBrightnessUp", lazy.spawn("/home/lescobarvx/.config/qtile/bright_up.sh")),

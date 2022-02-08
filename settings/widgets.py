@@ -2,11 +2,15 @@ from libqtile import widget
 from settings.theme import colors
 from settings.monitors import connected_monitors
 import subprocess
+import subprocess
 
 # Get the icons at https://www.nerdfonts.com/cheat-sheet (you need a Nerd Font)
 
 def whatismyip():
-    return '   ' + subprocess.check_output(['curl', 'ifconfig.me']).decode('utf-8').strip()  + ' '
+    return '   ' + subprocess.check_output(['curl', 'ifconfig.me']).decode('utf-8').strip()  + ' '
+
+def airpod_battery():
+    return subprocess.check_output(['bluetooth_battery', '41:42:6E:FF:7C:57', '   ', '   ', '']).decode('utf-8').strip()  + ' '
 
 base = lambda fg='text', bg='dark': {
     'foreground': colors[fg],
@@ -86,11 +90,17 @@ primary_widgets = [
 
     notif_01,
 
-    powerline('color2', 'dark'),
+    powerline('color3', 'dark'),
 
-    widget.CurrentLayoutIcon(**base(bg='color2'), scale=0.65),
+    widget.CurrentLayoutIcon(**base(bg='color3'), scale=0.65),
 
-    widget.CurrentLayout(**base(bg='color2'), padding=5),
+    widget.CurrentLayout(**base(bg='color3'), padding=5),
+
+    powerline('color2', 'color3'),
+
+    #widget.GenPollText(**base(bg='color2'), func=airpod_battery, update_interval=300),
+    icon(bg="color2", text=' '), # Icon: nf-fa-download
+    widget.ThermalSensor(**base(bg='color2')), # sudo apt install lm-sensors
 
     powerline('color1', 'color2'),
 
@@ -107,11 +117,13 @@ secondary_widgets = [
 
     notif_02,
 
-    powerline('color2', 'dark'),
+    powerline('color4', 'dark'),
 
-    widget.CurrentLayoutIcon(**base(bg='color2'), scale=0.65),
+    widget.CurrentLayoutIcon(**base(bg='color4'), scale=0.65),
 
-    widget.CurrentLayout(**base(bg='color2'), padding=5),
+    widget.CurrentLayout(**base(bg='color4'), padding=5),
+
+    powerline('color2', 'color4'),
 
     widget.GenPollText(**base(bg='color2'), func=whatismyip),
 ]
@@ -120,25 +132,23 @@ pbottom_widgets = [
     widget.TaskList(background=colors['dark'], highlight_method='block', font='UbuntuMono Nerd Font Bold', fontsize=10),
     separator(),
 
-    powerline('color4', 'dark'),
+    #powerline('color4', 'dark'),
 
-    icon(bg="color4", text=' '),  # Icon: nf-fa-feed
-    
-    widget.KeyboardLayout(**base(bg='color4'), configured_keyboards=['us', 'latam', 'es']),
+    #icon(bg="color4", text=' '),  # Icon: nf-fa-feed
+    #widget.KeyboardLayout(**base(bg='color4'), configured_keyboards=['us', 'latam', 'es']),
 
-    powerline('color3', 'color4'),
+    powerline('color3', 'dark'),
 
     icon(bg="color3", text=' '), # Icon: nf-fa-download
     
-    #widget.Pacman(**base(bg='color4'), update_interval=1800),
     widget.DF(**base(bg='color3'), visible_on_warn=False, measure='G', warn_space=5, format=' Free:{uf}{m}/{s}{m}  Used:{r:.0f}% '),
-    icon(bg="color3", text=' '), # Icon: nf-fa-download
-    widget.ThermalSensor(**base(bg='color3')),
+    #icon(bg="color3", text=' '), # Icon: nf-fa-download
+    #widget.ThermalSensor(**base(bg='color3')), # sudo apt install lm-sensors
 
     powerline('color2', 'color3'),
 
-    icon(bg="color2", text='  '),  # Icon: nf-fa-feed
-    widget.Battery(**base(bg='color2'), fontsize=10),
+    icon(bg="color2", text=' '),  # Icon: nf-fa-feed
+    widget.Battery(**base(bg='color2')),
 
     powerline('dark', 'color2'),
 
@@ -150,20 +160,29 @@ sbottom_widgets = [
     widget.TaskList(background=colors['dark'], highlight_method='block', font='UbuntuMono Nerd Font Bold', fontsize=10),
     powerline('color2', 'dark'),
 
-    icon(bg="color2", text=' '),  # Icon: nf-fa-feed
-    widget.Memory(**base(bg='color2')),
+    icon(bg="color2", text=' '),  # Icon: nf-fa-feed
+    widget.KeyboardLayout(**base(bg='color2'), configured_keyboards=['us', 'latam', 'es']),
+
+    powerline('color3', 'color2'),
+
+    icon(bg="color3", text=' '),  # Icon: nf-fa-feed
+    widget.Memory(**base(bg='color3')),
+
+    powerline('color2', 'color3'),
 
     icon(bg="color2", text='  '),  # Icon: nf-fa-feed
     widget.Wlan(**base(bg='color2'), interface='wlp2s0'),  ## Missing iwlib - No se puede instalar
 
-    icon(bg="color2", text='  '),  # Icon: nf-fa-feed
-    widget.Net(**base(bg='color2'), format='{down} ↓↑ {up}', interface='eno1'),
-
     powerline('color3', 'color2'),
 
-    icon(bg="color3", fontsize=17, text=' '), # Icon: nf-mdi-calendar_clock
+    icon(bg="color3", text='  '),  # Icon: nf-fa-feed
+    widget.Net(**base(bg='color3'), format='{down} ↓↑ {up}', interface='eno1'),
 
-    widget.Clock(**base(bg='color3'), format='%d/%m/%Y - %H:%M '),
+    powerline('dark', 'color3'),
+
+    icon(bg="dark", fontsize=17, text=' '), # Icon: nf-mdi-calendar_clock
+
+    widget.Clock(**base(bg='dark'), format='%d/%m/%Y - %H:%M '),
 ]
 
 widget_defaults = {

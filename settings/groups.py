@@ -7,7 +7,8 @@
 from libqtile import layout
 from libqtile.config import Key, Group, Match, ScratchPad, DropDown
 from libqtile.command import lazy
-from settings.keys import mod, keys
+from settings.keys import mod, shift, alt, control, keys
+
 
 groups_dict = {
     'command': {'label': "   ", 'pos': 1,},
@@ -28,8 +29,8 @@ for i in groups_dict.keys():
         groups.append(Group(i, label=groups_dict[i]['label'], position=groups_dict[i]['pos'],
             spawn=[
             'stterm -e /home/lescobarvx/.config/qtile/bpytop.sh', 
-            'stterm -e /home/lescobarvx/.config/qtile/pping.sh google.com wlp2s0 PNS 2 0',
-            'stterm -e /home/lescobarvx/.config/qtile/pping.sh google.com eno1 INTERCABLE 1 0',
+            'stterm -e /home/lescobarvx/.config/qtile/pping.sh google.com wlp2s0 INTER 1 0',
+            'stterm -e /home/lescobarvx/.config/qtile/pping.sh google.com eno1 PNS 2 0',
             #'urxvt -letsp 1 -rv +sb -e /home/lescobarvx/.config/qtile/pping.sh google.com wlp2s0 PNS 4 7',
             #'urxvt -letsp 1 -rv +sb -e /home/lescobarvx/.config/qtile/pping.sh google.com eno1 INTERCABLE 1 7',
             # 'stterm -e /home/lescobarvx/.config/qtile/mtr --displaymode 2  9.9.9.9',
@@ -48,6 +49,22 @@ for i in groups_dict.keys():
     elif i == 'explorer':
         groups.append(Group(i, label=groups_dict[i]['label'], position=groups_dict[i]['pos'], 
             matches=[Match(wm_class=['nautilus','Nautilus', 'gnome-calculator', 'Calculadora', 'Calculator'])]))
+    #Group(i, label=groups_dict[i]['label'], position=groups_dict[i]['pos'], 
+    #   matches=[Match(wm_class=['ulauncher'])])
+    elif i == 'multimedia':
+        groups.append(Group(i, label=groups_dict[i]['label'], position=groups_dict[i]['pos'],
+            matches=[
+                Match(title=['Spotify', 'Kodi', 'emby-theater']),
+                Match(wm_class=['zoom', 'kodi-bin', 'kodi', 'emby-theater', 'Totem', 'spotify', '/usr/share/spotify/spotify']),
+            ]))
+    elif i == 'tools':
+        groups.append(Group(i, label=groups_dict[i]['label'], position=groups_dict[i]['pos'],
+            matches=[Match(wm_class=['Shutter', 'pavucontrol', 'Control de Volumen', 'blueman-manager'])]))
+    elif i == 'stack':
+        groups.append(Group(i, label=groups_dict[i]['label'], position=groups_dict[i]['pos'],
+            matches=[
+                Match(wm_class=['', 'Unnamed', 'transmission-gtk', 'soffice', 'libreoffice', 'wps', 'et', 'FileZilla',
+                                'libreoffice-calc', 'telegram-desktop', 'TelegramDesktop']), ]))
     elif i == 'scratchpad':
         groups.append(ScratchPad(i, [
                 DropDown("show_ip", "stterm -e /home/lescobarvx/.config/qtile/show_ip.sh", on_focus_lost_hide=False),
@@ -56,28 +73,12 @@ for i in groups_dict.keys():
                 DropDown("remove_route", "stterm -e /home/lescobarvx/.config/qtile/remove_route.sh", on_focus_lost_hide=False),
                 DropDown("speedtest", "stterm -e /home/lescobarvx/.config/qtile/speedtest.sh", on_focus_lost_hide=False),
                 DropDown("change_network", "stterm -e /home/lescobarvx/.config/qtile/change_network.sh", on_focus_lost_hide=False, width=0.7, height=0.8),
-                DropDown("telegram-desktop", "telegram-desktop", on_focus_lost_hide=False),
-                DropDown("spotify", "spotify", on_focus_lost_hide=False, width=0.9, height=0.9),
+                DropDown("telegram-desktop", "telegram-desktop", on_focus_lost_hide=False, width=0.9, height=0.9),
+                DropDown("spotify", "spotify", on_focus_lost_hide=False, width=0.7, height=0.7),
                 DropDown("gnome-calculator", "gnome-calculator", on_focus_lost_hide=False, width=0.9, height=0.9),
                 DropDown("pavucontrol", "pavucontrol", on_focus_lost_hide=False, width=0.9, height=0.9),
                 DropDown("ulauncher", "ulauncher", on_focus_lost_hide=False, width=0.9, height=0.9),
             ])) 
-    #Group(i, label=groups_dict[i]['label'], position=groups_dict[i]['pos'], 
-    #   matches=[Match(wm_class=['ulauncher'])])
-    elif i == 'multimedia':
-        groups.append(Group(i, label=groups_dict[i]['label'], position=groups_dict[i]['pos'],
-            matches=[
-                Match(title=['Spotify', 'Kodi']),
-                Match(wm_class=['zoom', 'kodi-bin', 'kodi', 'Totem', 'spotify', '/snap/spotify/42/usr/share/spotify/spotify']),
-            ]))
-    elif i == 'tools':
-        groups.append(Group(i, label=groups_dict[i]['label'], position=groups_dict[i]['pos'],
-            matches=[Match(wm_class=['Shutter', 'pavucontrol', 'Control de Volumen'])]))
-    elif i == 'stack':
-        groups.append(Group(i, label=groups_dict[i]['label'], position=groups_dict[i]['pos'],
-            matches=[
-                Match(wm_class=['', 'Unnamed', 'transmission-gtk', 'soffice', 'libreoffice', 'wps', 'et', 'FileZilla',
-                                'libreoffice-calc', 'telegram-desktop', 'TelegramDesktop']), ]))
     else:
         groups.append(Group(i, label=groups_dict[i]['label'], position=groups_dict[i]['pos'],))
 

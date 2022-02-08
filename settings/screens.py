@@ -13,7 +13,11 @@ import subprocess
 
 status_bar = lambda widgets: bar.Bar(widgets, 24, opacity=1)
 
-screens = [Screen(top=status_bar(primary_widgets),bottom=status_bar(pbottom_widgets))]
+screens = [Screen(
+            top=status_bar(primary_widgets),
+            bottom=status_bar(pbottom_widgets), 
+            wallpaper='~/.config/qtile/background.jpg', 
+            wallpaper_mode='stretch',)]
 
 #connected_monitors = subprocess.run(
 #    "xrandr | grep 'connected' | cut -d ' ' -f 2",
