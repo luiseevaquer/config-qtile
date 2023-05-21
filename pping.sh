@@ -15,7 +15,10 @@ FCOLOR=`tput setaf $4` # Foreground Color
 BCOLOR=`tput setab $5` # Background Color
 while true
 do
-    echo -e "Red: ${FCOLOR}${BCOLOR}${BOLD} $3 ${NC}"
-    prettyping $1 -I $2 -c 350 --last 100 --nolegend
+    PROVIDERIP=`curl ipinfo.io/ip --interface $2`
+    PROVIDER=`curl ipinfo.io/org --interface $2`
     clear
+    echo -e "Red: ${FCOLOR}${BOLD} $3 ($2) - $PROVIDER ($PROVIDERIP) ${NC}"
+    sleep 2
+    prettyping $1 -I $2 -c 350 --last 100 --nolegend
 done

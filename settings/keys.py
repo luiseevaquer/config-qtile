@@ -14,7 +14,7 @@ alt = "mod1"
 control = "control"
 
 # EMBY VARIABLES
-SERVER = "http://192.168.1.16"
+SERVER = "http://192.168.1.10"
 PORT = "8096"
 API = "aa5a3636ba5540099f001e81d3122619"
 SESSION = "11f0b585ab09be1d51a70079d77d1c15"
@@ -47,7 +47,7 @@ keys = [
     Key([mod, "mod1"], "h",      lazy.to_screen(0)),
     Key([mod, "mod1"], "l",      lazy.to_screen(1)),
     Key([mod, "control"], "x",   lazy.window.kill()),
-    Key([mod], "e",              lazy.spawn("nautilus")),
+    Key([mod], "e",              lazy.spawn("sunflower")),
     Key([mod, "control"], "r",   lazy.restart()),
     Key([mod, "shift"], "r",   lazy.restart()),
     Key([mod, "mod1"], "r",   lazy.restart()),
@@ -67,11 +67,11 @@ keys = [
 
     # start specific apps
     Key([mod], "F1",             lazy.spawn("firefox")),
-    Key([mod], "F2",             lazy.spawn("terminator")),
-    Key([mod], "XF86Mail",       lazy.spawn("terminator")), 
-    Key([mod, "control"], "XF86Mail",       lazy.spawn("killall terminator")), 
+    Key([mod], "F2",             lazy.spawn("flatpak run org.wezfurlong.wezterm")),
+    Key([mod], "XF86Mail",       lazy.spawn("flatpak run org.wezfurlong.wezterm")), 
+    Key([mod, "control"], "XF86Mail",       lazy.spawn("killall wezterm-gui")), 
     #Key([mod, "control"], "F1",     lazy.spawn("killall /usr/lib/firefox/firefox")),
-    Key([mod, "control"], "F2",     lazy.spawn("killall terminator")),
+    Key([mod, "control"], "F2",     lazy.spawn("killall wezterm-gui")),
     Key([mod, "control"], "XF86Calculator",            lazy.spawn("killall gnome-calculator")),
     #Key([mod], "Music",              lazy.function(app_or_group("music", "spotify"))),
     Key([mod, "shift"], "t",             lazy.spawn("urxvt -letsp 1 -rv +sb")),
@@ -97,9 +97,9 @@ keys = [
     Key([mod], "XF86Messenger", lazy.spawn("zoom")),
     Key([mod], "XF86Tools", lazy.spawn("kodi")),
 
-    Key([], "XF86Launch5", lazy.spawn("firefox-dev")), # Buttom 1 
-    Key([mod, "control"], "XF86Launch5", lazy.spawn("killall /opt/firefox-dev/firefox-bin")), # Buttom 1 
-    Key([mod, "control", "shift"], "F2", lazy.spawn("killall /opt/firefox-dev/firefox-bin")), # Buttom 1 
+    Key([], "XF86Launch5", lazy.spawn("/opt/firefox/firefox")), # Buttom 1 
+    Key([mod, "control"], "XF86Launch5", lazy.spawn("killall /opt/firefox/firefox-bin")), # Buttom 1 FIREFOX DEV
+        Key([mod, "control", "shift"], "F2", lazy.spawn("killall /opt/firefox/firefox-bin")), # Buttom 1 FIREFOX DEV
     Key([], "XF86Launch6", lazy.spawn("google-chrome")), # Buttom 2 
     Key([mod, "control"], "XF86Launch6", lazy.spawn("killall chrome")), # Buttom 2 
     Key([], "XF86Launch7", lazy.spawn("wcm")), # Buttom 3 
@@ -107,8 +107,44 @@ keys = [
     Key([], "XF86Launch8", lazy.spawn("onlyoffice-desktopeditors")), # Buttom 4 
     Key([], "XF86Launch9", lazy.spawn("/home/lescobarvx/.config/qtile/freeram.sh")), # Buttom 5 
     Key([mod, "control", "shift"], "F5", lazy.spawn("/home/lescobarvx/.config/qtile/freeram.sh")), # Buttom 5 
+    
+    # CONFIGURACION DE TECLAS PARA CONTROL DE LUCES ################################################################################################################################################
+
+    Key(["control", "shift"], "XF86Launch5", lazy.spawn("/home/lescobarvx/.config/hass/service_hass.sh light toggle light.bulb_sala")), # Buttom 1 BOMBILLO SALA
+    Key(["control", "shift"], "XF86Launch6", lazy.spawn("/home/lescobarvx/.config/hass/service_hass.sh light toggle light.bombillo_deborah")), # Buttom 2 BOMBILLO DEBORAH
+    Key(["control", "shift"], "XF86Launch7", lazy.spawn("/home/lescobarvx/.config/hass/service_hass.sh light toggle light.cuarto_principal")), # Buttom 3 BOMBILLO SHAILL
+    Key(["control", "shift"], "XF86Favorites", lazy.spawn("/home/lescobarvx/.config/hass/service_hass.sh light toggle light.luces_hogar")), # Buttom 3 BOMBILLO SHAILL
+
+    Key([mod, "control", "shift"], "XF86AudioPlay", lazy.spawn("/home/lescobarvx/.config/hass/service_hass.sh light turn_on")), # ENCENDER TODOS LOS BOMBILLOS 
+    Key([mod, "control", "shift"], "XF86AudioStop", lazy.spawn("/home/lescobarvx/.config/hass/service_hass.sh light turn_off")), # APAGAR TODOS LOS BOMBILLOS 
  
+    Key([mod, "control", "shift"], "XF86Launch5", lazy.spawn("/home/lescobarvx/.config/hass/set_bulb_hass.sh light.bulb_sala")), 
+    Key([mod, "control", "shift"], "XF86Launch6", lazy.spawn("/home/lescobarvx/.config/hass/set_bulb_hass.sh light.bombillo_deborah")), 
+    Key([mod, "control", "shift"], "XF86Launch7", lazy.spawn("/home/lescobarvx/.config/hass/set_bulb_hass.sh light.cuarto_principal")), 
+    Key([mod, "control", "shift"], "XF86Favorites", lazy.spawn("/home/lescobarvx/.config/hass/set_bulb_hass.sh light.luces_hogar")), 
+
+    Key([mod, "control", "shift"], "w", lazy.spawn("/home/lescobarvx/.config/hass/light_hass.sh turn_on white 6500 100")), # ENCENDER TODOS LOS BOMBILLOS COLD WHITE
+    Key([mod, "control", "shift"], "r", lazy.spawn("/home/lescobarvx/.config/hass/light_hass.sh turn_on red 100")), # ENCENDER TODOS LOS BOMBILLOS RED
+    Key([mod, "control", "shift"], "b", lazy.spawn("/home/lescobarvx/.config/hass/light_hass.sh turn_on blue 100")), # ENCENDER TODOS LOS BOMBILLOS BLUE
+    Key([mod, "control", "shift"], "g", lazy.spawn("/home/lescobarvx/.config/hass/light_hass.sh turn_on green 100")), # ENCENDER TODOS LOS BOMBILLOS GREEN
+    Key([mod, "control", "shift"], "y", lazy.spawn("/home/lescobarvx/.config/hass/light_hass.sh turn_on yellow 100")), # ENCENDER TODOS LOS BOMBILLOS YELLOW
+    Key([mod, "control", "shift"], "m", lazy.spawn("/home/lescobarvx/.config/hass/light_hass.sh turn_on magenta 100")), # ENCENDER TODOS LOS BOMBILLOS MAGENTA
+    Key([mod, "control", "shift"], "c", lazy.spawn("/home/lescobarvx/.config/hass/light_hass.sh turn_on cyan 100")), # ENCENDER TODOS LOS BOMBILLOS CYAN
+    Key([mod, "control", "shift"], "o", lazy.spawn("/home/lescobarvx/.config/hass/light_hass.sh turn_on orange 100")), # ENCENDER TODOS LOS BOMBILLOS ORANGE
+    Key([mod, "control", "shift"], "p", lazy.spawn("/home/lescobarvx/.config/hass/light_hass.sh turn_on purple 100")), # ENCENDER TODOS LOS BOMBILLOS PURPLE
+    Key([mod, "control", "shift"], "f", lazy.spawn("/home/lescobarvx/.config/hass/efect_light_hass.sh Beautiful")), # ENCENDER TODOS LOS BOMBILLOS EFECTO BEAUTIFUL
+    Key([mod, "control", "shift"], "a", lazy.spawn("/home/lescobarvx/.config/hass/efect_light_hass.sh Rainbow")), # ENCENDER TODOS LOS BOMBILLOS EFECTO BEAUTIFUL
+    
+    Key([mod, "control", "shift"], "XF86AudioRaiseVolume", lazy.spawn("/home/lescobarvx/.config/hass/brightness_hass.sh step +10")), 
+    Key([mod, "control", "shift"], "XF86AudioLowerVolume", lazy.spawn("/home/lescobarvx/.config/hass/brightness_hass.sh step -10")), 
+
+    Key([mod, "control", "shift"], "XF86AudioNext", lazy.spawn("/home/lescobarvx/.config/hass/brightness_hass.sh fixed 255")), 
+    Key([mod, "control", "shift"], "XF86AudioPrev", lazy.spawn("/home/lescobarvx/.config/hass/brightness_hass.sh fixed 1")), 
+
+    # ################################################################################################################################################################################################
+
     Key([], "XF86AudioPlay", lazy.spawn("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause")),
+
     Key([], "XF86AudioNext", lazy.spawn("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next")),
     Key([], "XF86AudioPrev", lazy.spawn("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous")),
 
@@ -120,10 +156,10 @@ keys = [
     #Key([], "XF86AudioNext", lazy.spawn('curl -X POST "{}:{}/emby/Sessions/{}/Playing/NextTrack?api_key={}" {} -d "{\"Command\":\"NextTrack\"}"'.format(SERVER, PORT, SESSION, API, HEADER))),
     #Key([], "XF86AudioPrev", lazy.spawn('curl -X POST "{}:{}/emby/Sessions/{}/Playing/PreviousTrack?api_key={}" {} -d "{\"Command\":\"PreviousTrack\"}"'.format(SERVER, PORT, SESSION, API, HEADER))),
     #Key([], "XF86AudioStop", lazy.spawn('curl -X POST "{}:{}/emby/Sessions/{}/Command/ToggleOsdMenu?api_key={}" {} -d "{\"Command\":\"ToggleOsdMenu\"}"'.format(SERVER, PORT, SESSION, API, HEADER))),
-    Key([mod, "mod1"], "XF86AudioStop", lazy.spawn("ssh lescobar@192.168.1.16 \"/home/lescobar/.config/qtile/shutdown.sh\"")),
+    Key([mod, "mod1"], "XF86AudioStop", lazy.spawn("ssh tecnodomotik@192.168.1.16 \"/home/tecnodomotik/.config/qtile/shutdown.sh\"")),
 
     Key([mod, "control"], "XF86HomePage",     lazy.spawn("killall /usr/lib/firefox/firefox")),
-    # Key([], "XF86Favorites",     lazy.spawn("code")),
+    Key([], "XF86Favorites",     lazy.spawn("kodi")),
 
     #Brightness
     Key([], "XF86MonBrightnessUp", lazy.spawn("/home/lescobarvx/.config/qtile/bright_up.sh")),

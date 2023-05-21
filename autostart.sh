@@ -1,9 +1,9 @@
 #!/bin/sh
 #ulauncher &
-synergy &
+barrier &
 megasync &
 #dropbox start &
-shutter &
+shutter --min_at_startup &
 blueman-applet &
 xscreensaver -nosplash &
 triggercmdagent &
