@@ -68,7 +68,8 @@ keys = [
     # start specific apps
     Key([mod], "F1",             lazy.spawn("firefox")),
     Key([mod], "F2",             lazy.spawn("flatpak run org.wezfurlong.wezterm")),
-    Key([mod], "XF86Mail",       lazy.spawn("flatpak run org.wezfurlong.wezterm")), 
+    Key([], "XF86Mail",       lazy.spawn("/home/lescobarvx/Descargas/beeper-3.62.20.AppImage")), 
+    Key([mod], "XF86Mail",       lazy.spawn("/home/lescobarvx/Descargas/beeper-3.62.20.AppImage")), 
     Key([mod, "control"], "XF86Mail",       lazy.spawn("killall wezterm-gui")), 
     #Key([mod, "control"], "F1",     lazy.spawn("killall /usr/lib/firefox/firefox")),
     Key([mod, "control"], "F2",     lazy.spawn("killall wezterm-gui")),
